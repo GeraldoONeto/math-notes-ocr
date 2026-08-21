@@ -1,4 +1,3 @@
-from data import vocab
 import os
 import re
 import glob
@@ -42,7 +41,7 @@ class CROHMEDataset(Dataset):
         tokens = self.tokenizer.encode(text)
 
         final_tokens = [1] + tokens + [2]
-        
+
         tensor_tokens = torch.tensor(final_tokens)
 
 

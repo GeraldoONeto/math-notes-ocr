@@ -1,3 +1,4 @@
+from data import vocab
 import os
 import re
 import glob
@@ -5,14 +6,13 @@ import torch
 from PIL import Image
 
 from torch.utils.data import Dataset
-
-from . import vocab
+from pix2tex.cli import LatexOCR
 
 class CROHMEDataset(Dataset):
-    def __init__(self, folder, transform, vocabulary):
+    def __init__(self, folder, transform, tokenizer):
         self.folder = folder
         self.transform = transform
-        self.vocabulary = vocabulary 
+        self.tokenizer = tokenizer 
 
         png_paths = glob.glob(os.path.join(self.folder, '*.png'))
         self.file_names = []
@@ -39,12 +39,11 @@ class CROHMEDataset(Dataset):
         with open(txt_path, encoding='utf-8') as f:
             text = f.read()
 
-        token_keys = re.findall(vocab.TOKEN_PATTERN, text)
-        tokens_values = []
+        tokens = self.tokenizer.encode(text)
 
-        for key in token_keys:
-            tokens_values.append(self.vocabulary[key])
+        final_tokens = [1] + tokens + [2]
+        
+        tensor_tokens = torch.tensor(final_tokens)
 
-        tensor_tokens = torch.tensor(tokens_values)
 
         return image, tensor_tokens

@@ -5,7 +5,6 @@ import torch
 from PIL import Image
 
 from torch.utils.data import Dataset
-from torch.nn.utils.rnn import pad_sequence
 
 from . import vocab
 
@@ -49,13 +48,3 @@ class CROHMEDataset(Dataset):
         tensor_tokens = torch.tensor(tokens_values)
 
         return image, tensor_tokens
-
-
-def collate_fn(batch):
-    images, tokens = zip(*batch)
-
-    images = torch.stack(images)
-
-    pad_tokens = pad_sequence(list(tokens), batch_first=True, padding_value=0)
-
-    return images, pad_tokens

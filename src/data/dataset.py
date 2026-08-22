@@ -32,7 +32,7 @@ class CROHMEDataset(Dataset):
         png_path = os.path.join(self.folder, name + '.png')
         txt_path = os.path.join(self.folder, name + '.txt')
 
-        image = Image.open(png_path).convert('RGB')
+        image = Image.open(png_path)
         image = self.transform(image)
 
         with open(txt_path, encoding='utf-8') as f:

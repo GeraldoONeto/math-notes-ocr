@@ -1,8 +1,24 @@
 from torchvision import transforms
+import torchvision.transforms.functional as F
+from PIL import Image
 
-def get_transform():
+class ResizePad:
+    def __init__(self, target_size):
+        self.target_width, self.target_height = target_size
+
+    def __call__(self, img):
+        img.thumbnail((self.target_width, self.target_height), Image.Resampling.LANCZOS)
+
+        delta_w = self.target_width - img.size[0]
+        delta_h = self.target_height - img.size[1]
+        padding = [0, 0, int(delta_w), int(delta_h)]
+
+        return F.pad(img, padding, fill=255)
+    
+
+def get_transform(max_dim, min_dim):
     return transforms.Compose([
         transforms.Grayscale(),
-        transforms.Resize((224, 224)),
+        ResizePad(max_dim),
         transforms.ToTensor()
     ])

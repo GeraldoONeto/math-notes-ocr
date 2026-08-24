@@ -18,8 +18,12 @@ def build_vocab(dataset_folder):
 
     sort_tokens = sorted(tokens)
     
-    vocab = {'<PAD>': 0}
-    vocab.update({token: id for id, token in enumerate(sort_tokens, start=1)})
+    vocab = {
+        '<PAD>': 0,
+        '<BOS>': 1,
+        '<EOS>': 2
+        }
+    vocab.update({token: id for id, token in enumerate(sort_tokens, start=3)})
 
     return vocab
 

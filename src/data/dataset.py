@@ -39,9 +39,7 @@ class CROHMEDataset(Dataset):
             text = f.read()
 
         tokens = self.tokenizer.encode(text)
-
         final_tokens = [1] + tokens + [2]
-
         tensor_tokens = torch.tensor(final_tokens)
 
 

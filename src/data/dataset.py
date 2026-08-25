@@ -22,7 +22,7 @@ class CROHMEDataset(Dataset):
             name = os.path.basename(path).replace('.png', '')
             self.file_names.append(name)
 
-            txt_path = os.path.join(self.folder, name + 'txt')    
+            txt_path = os.path.join(self.folder, name + '.txt')    
             with open(txt_path, encoding='utf-8') as f:
                 self.texts.append(f.read())
 

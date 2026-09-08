@@ -36,7 +36,7 @@ class CROHMEDataset(Dataset):
 
         png_path = os.path.join(self.folder, name + '.png')
         image = Image.open(png_path)
-        image = self.transform(image)
+        tensor_image = self.transform(image)
 
 
         tokens = self.tokenizer.encode(text)
@@ -44,4 +44,25 @@ class CROHMEDataset(Dataset):
         tensor_tokens = torch.tensor(final_tokens)
 
 
-        return image, tensor_tokens
+        return tensor_image, tensor_tokens
+
+class MathWritingDataset(Dataset):
+    def __init__(self, dataset, transform, tokenizer):
+        self.dataset = dataset
+        self.transform = transform 
+        self.tokenizer = tokenizer
+
+    def __len__(self):
+        return self.dataset.num_rows
+
+    def __getitem__(self, index):
+        image = self.dataset[index]['image']
+        text = self.dataset[index]['latex']
+
+        tensor_images = self.transform(image)
+
+        tokens = self.tokenizer.encode(text)
+        tokens = [1] + tokens + [2]
+        tensor_tokens = torch.tensor(tokens)
+
+        return tensor_images, tensor_tokens

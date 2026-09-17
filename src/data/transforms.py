@@ -16,7 +16,7 @@ class ResizePad:
         return F.pad(img, padding, fill=255)
     
 
-def get_transform(max_dim, min_dim, train=False):
+def get_transform(max_dim, train=False):
     transform_list = []
 
     if train:
@@ -28,7 +28,8 @@ def get_transform(max_dim, min_dim, train=False):
     transform_list.extend([
         transforms.Grayscale(),
         ResizePad(max_dim),
-        transforms.ToTensor()
+        transforms.ToTensor(),
+        transforms.Normalize(mean=[0.7931], std=[0.1738])
     ])
 
     return transforms.Compose(transform_list)

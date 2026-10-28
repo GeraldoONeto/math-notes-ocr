@@ -1,4 +1,3 @@
-from wandb.sdk.lib.wbauth import prompt_and_save_api_key
 import os
 import re
 import glob
@@ -6,6 +5,7 @@ import torch
 from PIL import Image
 
 from torch.utils.data import Dataset
+"""
 from pix2tex.cli import LatexOCR
 
 class CROHMEDataset(Dataset):
@@ -67,6 +67,7 @@ class MathWritingDataset(Dataset):
         tensor_tokens = torch.tensor(tokens)
 
         return tensor_images, tensor_tokens
+"""
 
 class HMEDataset(Dataset):
     def __init__(self, dataset, processor):

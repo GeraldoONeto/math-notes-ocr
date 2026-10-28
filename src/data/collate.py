@@ -15,7 +15,7 @@ def make_collate_fn(pad_token_id):
         pixel_values = torch.stack([b["pixel_values"] for b in batch])
 
         return {
-            "inputs_ids": input_ids,
+            "input_ids": input_ids,
             "attention_mask": attention_mask,
             "labels": labels,
             "pixel_values": pixel_values

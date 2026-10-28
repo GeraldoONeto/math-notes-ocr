@@ -6,6 +6,8 @@ from PIL import Image
 
 from torch.utils.data import Dataset
 """
+from pix2tex.cli import LatexOCR
+
 class CROHMEDataset(Dataset):
     def __init__(self, folder, transform, tokenizer):
         
@@ -81,7 +83,7 @@ class HMEDataset(Dataset):
         image = ex["image"].convert("RGB")
 
         saida = self.processor(image, return_tensors="pt", format=True)
-        prompt_ids = saida["inputs_ids"][0]
+        prompt_ids = saida["input_ids"][0]
 
         alvo_ids = self.processor.tokenizer(ex["text"])["input_ids"] + [self.im_end_id]
         alvo_ids = torch.tensor(alvo_ids)

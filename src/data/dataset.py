@@ -1,3 +1,4 @@
+from wandb.sdk.lib.wbauth import prompt_and_save_api_key
 import os
 import re
 import glob
@@ -66,3 +67,31 @@ class MathWritingDataset(Dataset):
         tensor_tokens = torch.tensor(tokens)
 
         return tensor_images, tensor_tokens
+
+class HMEDataset(Dataset):
+    def __init__(self, dataset, processor):
+        self.dataset = dataset
+        self.processor = processor
+        self.im_end_id = processor.tokenizer.convert_tokens_to_ids("<|im_end|>")
+
+    def __len__(self):
+        return len(self.dataset)
+
+    def __getitem__(self, index):
+        ex = self.dataset[index]
+        image = ex["image"].convert("RGB")
+
+        saida = self.processor(image, return_tensors="pt", format=True)
+        prompt_ids = saida["inputs_ids"][0]
+
+        alvo_ids = self.processor.tokenizer(ex["text"])["input_ids"] + [self.im_end_id]
+        alvo_ids = torch.tensor(alvo_ids)
+
+        input_ids = torch.cat([prompt_ids, alvo_ids])
+        labels = torch.cat([torch.full_like(prompt_ids, -100), alvo_ids])
+
+        return {
+            "input_ids": input_ids,
+            "labels": labels,
+            "pixel_values": saida["pixel_values"][0]
+        }

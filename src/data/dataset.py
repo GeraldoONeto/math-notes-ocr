@@ -6,8 +6,6 @@ from PIL import Image
 
 from torch.utils.data import Dataset
 """
-#from pix2tex.cli import LatexOCR
-
 class CROHMEDataset(Dataset):
     def __init__(self, folder, transform, tokenizer):
         

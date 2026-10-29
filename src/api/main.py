@@ -6,7 +6,7 @@ app = FastAPI()
 
 @app.get("/")
 def raiz():
-    return{"messsagem": "math-ocr API"}
+    return{"mensagem": "math-ocr API"}
 
 @app.post("/transcrever")
 async def transcrever(imagem: UploadFile):

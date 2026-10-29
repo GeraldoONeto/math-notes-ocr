@@ -3,7 +3,8 @@ import torch
 import mlflow
 
 def move_batch(batch, device, dtype):
-    batch = {k: v.to(device=device, dtype=dtype) for k, v in batch.items()}
+    batch = {k: v.to(device) for k, v in batch.items()}      
+    batch["pixel_values"] = batch["pixel_values"].to(dtype)   
     return batch
 
 def validate(model, loader, device):

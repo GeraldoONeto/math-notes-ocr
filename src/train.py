@@ -27,7 +27,7 @@ def save_checkpoint(path, model, optimizer, epoch):
         path
     )
 
-def train(model, train_loader, val_loader, device, epochs, lr, accum_steps, ckpt_dir, run_name):
+def train(model, train_loader, val_loader, device, epochs, lr, accum_steps, checkpt_dir, run_name):
     optimizer = torch.optim.Adam([p for p in model.parameters() if p.requires_grad], lr=lr)
     mlflow.set_experiment("got-ocr2-finetuning")
 
@@ -54,7 +54,7 @@ def train(model, train_loader, val_loader, device, epochs, lr, accum_steps, ckpt
                     print(f"epoch {epoch} step {i+1}/{len(train_loader)} "
                           f"loss {running_loss/(i+1):.4f} ({(time.time()-t0)/(i+1):.2f} s/step)")
                 if (i+1) % 500 == 0:
-                    save_checkpoint(f"{ckpt_dir}/last.pt", model, optimizer, epoch)
+                    save_checkpoint(f"{checkpt_dir}/last.pt", model, optimizer, epoch)
 
             
             val_loss = validate(model, val_loader, device)
@@ -63,8 +63,8 @@ def train(model, train_loader, val_loader, device, epochs, lr, accum_steps, ckpt
             )
             print(f"== epoch {epoch}: val_loss {val_loss:.4f}")
 
-            save_checkpoint(f"{ckpt_dir}/last.pt", model, optimizer, epoch)
+            save_checkpoint(f"{checkpt_dir}/last.pt", model, optimizer, epoch)
             if val_loss < best_val:
                 best_val = val_loss
-                save_checkpoint(f"{ckpt_dir}/best.pt", model, optimizer, epoch)
+                save_checkpoint(f"{checkpt_dir}/best.pt", model, optimizer, epoch)
                 print("   best checkpoint saved")
